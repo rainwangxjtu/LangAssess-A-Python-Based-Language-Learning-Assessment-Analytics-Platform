@@ -1,4 +1,3 @@
-```python
 """
 progress.py
 
@@ -1325,4 +1324,3 @@ def plot_unit_average_progress(df):
     fig.tight_layout()
 
     return fig
-```
