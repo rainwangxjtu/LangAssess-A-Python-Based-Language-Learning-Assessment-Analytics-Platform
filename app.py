@@ -1,4 +1,3 @@
-```python
 """
 app.py
 
@@ -439,4 +438,3 @@ st.download_button(
     ),
     mime="text/csv",
 )
-```
