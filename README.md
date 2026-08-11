@@ -1,425 +1,356 @@
-# LangAssess: Language Learning Assessment Analytics Platform
+# LangAccess
+
+### Longitudinal Student Progress & Error Analysis Platform
+
+LangAccess is a Python-based analytics platform for tracking **individual student progress across multiple assessment units** and analyzing recurring error patterns over time.
+
+The system transforms assessment data into longitudinal performance trajectories, error-type distributions, and student-level progress reports. It is designed to support data-driven instructional decisions while providing a reproducible framework for analyzing learner performance.
+
+---
 
 ## Overview
 
-**LangAssess** is a Python-based assessment analytics platform designed to help language educators analyze student performance, identify learning patterns, and make more data-informed instructional decisions.
+Traditional assessment records often capture scores for individual assignments but make it difficult to answer longitudinal questions such as:
 
-The project demonstrates how Python and data analysis can transform student assessment data from individual observations into structured, longitudinal insights.
+* How is an individual student's performance changing across units?
+* Which error types persist over time?
+* Is a student's overall score improving because of genuine improvement or changes in specific skill areas?
+* Which linguistic error categories contribute most to performance difficulties?
+* How can assessment data be transformed into interpretable progress reports?
 
-The current demonstration version analyzes **17 students across three cohorts** and provides interactive tools for examining grade trajectories, progress patterns, and assessment outcomes.
-
----
-
-## Motivation
-
-Language instructors often evaluate student progress using a combination of grades, written work, classroom observations, and professional judgment.
-
-While these sources are valuable, relying primarily on individual observations can make it difficult to:
-
-* identify long-term performance trends
-* compare progress across cohorts
-* detect students whose performance is changing
-* summarize large amounts of assessment data
-* make consistent, evidence-based decisions
-
-LangAssess addresses this problem by organizing assessment information into a structured dataset and using Python-based analytics to identify patterns that may not be immediately visible from individual records.
-
----
-
-## Project Goals
-
-The main goals of LangAssess are to:
-
-1. Track student performance over time.
-2. Compare progress across multiple cohorts.
-3. Identify patterns in student grades and assessment outcomes.
-4. Provide educators with interpretable visualizations and summaries.
-5. Demonstrate how Python can support language assessment and instructional decision-making.
-
----
-
-## Current Version
-
-The current demo uses:
-
-* **17 students**
-* **3 cohorts**
-* Longitudinal assessment data
-* Student-level progress tracking
-* Cohort-level comparisons
-* Interactive Streamlit visualizations
-
-The dataset is intentionally small so that the project can be easily understood, tested, and demonstrated while preserving the structure needed to scale to larger datasets.
+**LangAccess** addresses these questions by organizing assessment data into a consistent longitudinal structure and automatically generating analyses of both **performance** and **error patterns**.
 
 ---
 
 ## Key Features
 
-### 1. Progress Analytics
+### 📈 Longitudinal Progress Tracking
 
-The progress analytics module organizes student assessment data and calculates performance trends over time.
+Track individual students from **Unit 1 through Unit 11**, allowing performance trajectories to be examined across an extended curriculum.
 
-It can be used to examine:
+The system supports:
 
-* individual student trajectories
-* average performance
-* assessment changes
-* cohort-level performance
-* students showing improvement or decline
+* Listening performance
+* Reading performance
+* Speaking performance
+* Unit-level total scores
+* Student-level progress trajectories
+* Cross-unit change analysis
 
-The goal is to move beyond looking at a single grade and instead examine **performance as a trajectory**.
+### 🔎 Error-Type Analysis
+
+Listening and Reading assessments are analyzed using four structured error categories:
+
+1. **Grammar**
+2. **Vocabulary Retention**
+3. **Discourse Analysis**
+4. **Sociocultural Background Knowledge**
+
+LangAccess aggregates these categories across units to identify recurring weaknesses and changing error distributions.
+
+### 👤 Individual Student Profiles
+
+Rather than focusing only on cohort averages, LangAccess prioritizes **individual longitudinal profiles**.
+
+For each student, the system can identify:
+
+* Overall score trends
+* Persistent error categories
+* Improving error categories
+* Units with significant performance changes
+* Relative strengths and weaknesses
+
+### 📊 Automated Visualization
+
+The analysis pipeline generates visualizations that make longitudinal patterns easier to interpret, including:
+
+* Unit-by-unit progress trajectories
+* Listening and Reading performance trends
+* Error-type distributions
+* Error-type trends across units
+* Student-level comparisons across assessment dimensions
+
+### ⚙️ Reproducible Data Pipeline
+
+Assessment data can be processed using a consistent workflow rather than manually calculating scores or constructing charts.
+
+The pipeline is designed to:
+
+* Validate expected columns
+* Parse unit-level assessment data
+* Aggregate error categories
+* Calculate longitudinal metrics
+* Generate student-level reports
+* Produce standardized visualizations
 
 ---
 
-### 2. Cohort Comparison
+## Data Structure
 
-Students are organized into three cohorts, allowing the application to compare groups rather than analyzing every student independently.
+LangAccess is designed around a repeated assessment structure in which each curriculum unit contains the same set of assessment variables.
 
-Cohort-level analysis can help answer questions such as:
+A simplified representation is:
 
-* Which cohort has the highest average performance?
-* How does performance change over time?
-* Are some cohorts improving faster than others?
-* Which assessment periods show the largest changes?
+```text
+Unit 1
+├── Listening
+│   ├── Total
+│   ├── Grammar
+│   ├── Vocabulary Retention
+│   ├── Discourse Analysis
+│   └── Sociocultural Background Knowledge
+│
+├── Reading
+│   ├── Total
+│   ├── Grammar
+│   ├── Vocabulary Retention
+│   ├── Discourse Analysis
+│   └── Sociocultural Background Knowledge
+│
+└── Speaking
+    └── Total
+
+Unit 2
+├── Listening
+├── Reading
+└── Speaking
+
+...
+
+Unit 11
+├── Listening
+├── Reading
+└── Speaking
+```
+
+This consistent schema allows the same analytical procedures to be applied across the entire curriculum.
 
 ---
 
-### 3. Student-Level Analysis
+## Example Analysis
 
-LangAssess allows individual students to be examined separately.
+For a student with Listening performance across multiple units:
 
-For each student, the application can provide a longitudinal view of their assessment performance.
+```text
+Unit        Listening Score
+--------------------------------
+Unit 1          72.5
+Unit 2          75.0
+Unit 3          78.5
+Unit 4          81.0
+Unit 5          84.0
+...
+Unit 11         91.5
+```
 
-This makes it possible to identify patterns such as:
+LangAccess can additionally examine the underlying error distribution:
 
-* consistent improvement
-* stable performance
-* gradual decline
-* sudden changes in performance
-* differences between students within the same cohort
+```text
+Error Type                  Unit 1    Unit 6    Unit 11
+---------------------------------------------------------
+Grammar                       High      Medium     Low
+Vocabulary Retention         High      Medium     Low
+Discourse Analysis           Medium    Medium     Low
+Sociocultural Knowledge      Medium    Low        Low
+```
+
+This makes it possible to distinguish between **overall score improvement** and **improvement in specific error categories**.
 
 ---
 
-### 4. Data-Driven Decision Support
+## Project Architecture
 
-The purpose of the application is not to replace instructor judgment.
+The project follows a modular analysis workflow:
 
-Instead, it provides an additional layer of evidence that can support professional judgment.
-
-Rather than asking only:
-
-> "What do I remember about this student's performance?"
-
-the system encourages questions such as:
-
-> "What does the student's performance data show over time?"
-
-This distinction is particularly important when working with multiple students and cohorts.
+```text
+                 Assessment Data
+                       │
+                       ▼
+              ┌─────────────────┐
+              │ Data Validation  │
+              └────────┬────────┘
+                       │
+                       ▼
+              ┌─────────────────┐
+              │ Data Processing │
+              └────────┬────────┘
+                       │
+              ┌────────┴────────┐
+              ▼                 ▼
+       Score Analysis      Error Analysis
+              │                 │
+              ▼                 ▼
+       Progress Trends     Error Trends
+              │                 │
+              └────────┬────────┘
+                       ▼
+              ┌─────────────────┐
+              │ Visualization & │
+              │     Reports     │
+              └─────────────────┘
+```
 
 ---
 
 ## Technology Stack
 
-The project is built primarily with Python.
-
-### Core Technologies
-
 * **Python**
-* **Pandas** — data manipulation and analysis
-* **NumPy** — numerical computation
-* **Streamlit** — interactive web application
-* **Matplotlib / Plotly** — data visualization
-* **Git / GitHub** — version control and project management
-
----
-
-## Project Structure
-
-```text
-lang-assess/
-│
-├── app.py
-│
-├── data/
-│   ├── progress.csv
-│   ├── writing_errors.csv
-│   └── ratings.csv
-│
-├── analysis/
-│   ├── progress.py
-│   ├── writing_errors.py
-│   └── agreement.py
-│
-├── requirements.txt
-│
-└── README.txt
-```
-
----
-
-## Data
-
-The project separates data from analysis code so that the analytical workflow can be modified without changing the underlying application structure.
-
-### `progress.csv`
-
-Contains longitudinal student assessment information used for progress analysis.
-
-Example fields may include:
-
-```text
-student_id
-cohort
-assessment
-score
-```
-
-### `writing_errors.csv`
-
-Contains structured information about learner writing errors.
-
-This module is designed to support analysis of error patterns and linguistic features.
-
-### `ratings.csv`
-
-Contains assessment ratings used to examine agreement between evaluators.
-
----
-
-## Analytical Modules
-
-The project is designed around three analytical components.
-
-### Progress Analytics
-
-Examines longitudinal student performance and cohort-level trends.
-
-### Writing Error Analysis
-
-Organizes learner writing errors into structured categories so that recurring linguistic patterns can be analyzed.
-
-### Inter-Rater Reliability
-
-Provides a framework for examining consistency between different evaluators.
-
-Together, these components demonstrate how assessment data can be analyzed at multiple levels:
-
-```text
-Student Level
-      ↓
-Assessment Level
-      ↓
-Cohort Level
-      ↓
-Program-Level Insights
-```
+* **pandas** — tabular data processing and aggregation
+* **NumPy** — numerical analysis
+* **Matplotlib** — data visualization
+* **CSV / tabular datasets** — assessment data storage
+* **Git / GitHub** — version control and reproducibility
 
 ---
 
 ## Example Workflow
 
-A typical workflow looks like this:
+### 1. Prepare assessment data
+
+Assessment files follow a standardized unit-level schema.
 
 ```text
-Assessment Data
-      ↓
-Data Cleaning
-      ↓
-Data Organization
-      ↓
-Statistical Analysis
-      ↓
-Visualization
-      ↓
-Pattern Identification
-      ↓
-Instructional Decision Support
+data/
+├── unit01.csv
+├── unit02.csv
+├── unit03.csv
+├── ...
+└── unit11.csv
 ```
 
-For example, an instructor could use the system to identify a student whose scores have declined across several assessments, then examine the student's writing-error profile to determine whether a particular linguistic feature may be contributing to the change.
-
----
-
-## Running the Application
-
-### 1. Clone the repository
+### 2. Run the analysis
 
 ```bash
-git clone https://github.com/YOUR-USERNAME/lang-assess.git
-cd lang-assess
+python progress.py
 ```
 
-### 2. Create a virtual environment
+### 3. Generate outputs
 
-```bash
-python3 -m venv .venv
-```
+The pipeline produces student-level longitudinal analyses and visualizations.
 
-Activate it:
-
-**macOS / Linux**
-
-```bash
-source .venv/bin/activate
-```
-
-**Windows**
-
-```bash
-.venv\Scripts\activate
-```
-
-### 3. Install dependencies
-
-```bash
-pip install -r requirements.txt
-```
-
-### 4. Run the Streamlit application
-
-```bash
-streamlit run app.py
-```
-
-The application will open in your browser.
-
----
-
-## Example Questions the Application Can Help Answer
-
-LangAssess is designed around practical assessment questions such as:
-
-### Individual Student
-
-* Is this student's performance improving?
-* Has the student's performance changed significantly over time?
-* Which assessments show the largest changes?
-
-### Cohort
-
-* How do the three cohorts compare?
-* Which cohort has the strongest average performance?
-* Are performance trends consistent across cohorts?
-
-### Assessment
-
-* Which assessments produce the largest score differences?
-* Are certain assessment periods associated with declines or improvements?
-
-### Instruction
-
-* Which students may benefit from additional attention?
-* Are certain error categories appearing repeatedly?
-* Are assessment decisions consistent across evaluators?
-
----
-
-## Why Python?
-
-Python provides a practical environment for combining data processing, statistical analysis, visualization, and machine learning.
-
-For this project, Python makes it possible to move through the complete analytical workflow:
+Example output structure:
 
 ```text
-Raw Data
-   ↓
-Pandas
-   ↓
-Analysis
-   ↓
-Visualization
-   ↓
-Interpretation
+outputs/
+├── student_progress/
+│   ├── student_01_progress.png
+│   ├── student_02_progress.png
+│   └── ...
+│
+├── error_analysis/
+│   ├── student_01_errors.png
+│   ├── student_02_errors.png
+│   └── ...
+│
+└── summary/
+    └── progress_summary.csv
 ```
-
-This workflow can eventually be extended to larger datasets and more advanced NLP or machine-learning models.
 
 ---
 
-## Scalability
+## Design Principles
 
-Although the current demonstration contains 17 students across three cohorts, the architecture is designed to scale.
+### Individual Progress Over Cohort Averages
 
-The same workflow can be applied to larger datasets containing:
+The primary unit of analysis is the **individual student**.
 
-* additional students
-* additional cohorts
-* more assessment periods
-* additional linguistic features
-* larger collections of learner writing
-* multiple evaluators
+Cohort-level summaries can hide important variation between learners. LangAccess therefore emphasizes student-specific trajectories and error patterns.
 
-The smaller dataset makes the project easier to demonstrate while maintaining a realistic analytical structure.
+### Performance + Error Analysis
+
+A single score does not explain *why* performance changes.
+
+LangAccess combines:
+
+```text
+Performance
+     +
+Error Categories
+     +
+Longitudinal Trends
+     ↓
+More Interpretable Student Profiles
+```
+
+### Reproducibility
+
+The same analytical workflow can be applied to new assessment units without manually rebuilding calculations or visualizations.
+
+### Extensibility
+
+The modular design allows additional assessment dimensions, error categories, and analytical metrics to be incorporated as the project evolves.
+
+---
+
+## Potential Applications
+
+Although developed for language-learning assessment, the underlying framework can be generalized to other longitudinal educational datasets.
+
+Potential applications include:
+
+* Language proficiency assessment
+* Formative assessment
+* Learning analytics
+* Error analysis
+* Individualized instruction
+* Longitudinal educational research
+* Student performance monitoring
+
+---
+
+## Project Motivation
+
+LangAccess was developed from a practical need to transform repeated language assessments into **actionable longitudinal data**.
+
+Rather than treating each assessment as an isolated score, the project treats student performance as a time series and examines both **what changes** and **which underlying error patterns drive those changes**.
+
+The broader goal is to connect educational assessment with computational analysis, enabling instructors and researchers to make more systematic use of learner data.
 
 ---
 
 ## Future Development
 
-Potential future extensions include:
+Potential future improvements include:
 
-* automated longitudinal trend detection
-* statistical significance testing
-* additional learner-writing analytics
-* automated linguistic error classification
-* NLP-based feedback generation
-* machine-learning-based performance prediction
-* interactive student profiles
-* additional inter-rater reliability statistics
-* database integration
-* deployment as a production web application
-
-The long-term goal is to develop LangAssess into a more comprehensive platform for **language assessment analytics and intelligent instructional decision support**.
+* Interactive dashboards
+* Automated PDF/HTML student reports
+* Statistical significance testing for longitudinal changes
+* Automated anomaly detection
+* Error-type prediction
+* LLM-assisted qualitative error analysis
+* Database-backed assessment storage
+* Web-based instructor interface
+* Integration with additional assessment modalities
 
 ---
 
-## Privacy and Data Protection
+## Privacy & Data Protection
 
-The demonstration dataset is intended for educational and software-development purposes.
+This repository is designed to operate on **de-identified or synthetic assessment data**.
 
-Real student information should not be uploaded to a public repository without appropriate authorization.
+No personally identifiable student information should be committed to the repository.
 
-When working with real assessment data:
-
-* remove personally identifiable information
-* use anonymized student identifiers
-* follow institutional data-handling policies
-* avoid committing sensitive student records to GitHub
-
----
-
-## Skills Demonstrated
-
-This project demonstrates practical experience with:
-
-* Python programming
-* Object-oriented and modular programming
-* Data structures
-* Pandas data analysis
-* Numerical computation
-* Data visualization
-* Longitudinal data analysis
-* Educational data analytics
-* Statistical reasoning
-* Streamlit application development
-* Git and GitHub
-* Software project organization
-
-It also demonstrates the ability to connect **domain expertise in language education and linguistics with computational data analysis**.
+For real-world deployments, appropriate institutional data-protection requirements should be followed.
 
 ---
 
 ## Author
 
-**Rain Wang**
+**Yuqi Wang**
 
-Assistant Professor (Language and Linguistics)
+Assistant Professor (Language and Linguistics), Defense Language Institute
 
-This project combines language assessment experience with Python-based data analysis to explore how computational methods can support more systematic and evidence-based approaches to language education.
+Interests include:
+
+* Natural Language Processing
+* Language Intelligence
+* Learning Analytics
+* Computational Linguistics
+* AI-assisted Language Assessment
+* Data-driven Educational Technology
 
 ---
 
 ## License
 
-This project is intended primarily as an educational and portfolio project.
-
-Add an appropriate open-source license if the repository will be distributed publicly.
+This project is intended for research and educational purposes.
